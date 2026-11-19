@@ -40,6 +40,12 @@ Uma resposta `201 Created` contém o pedido salvo e os snapshots de preço usado
 O serviço rejeita itens sem produto, quantidade não positiva e chamadas sem `id-account`.
 Produtos inexistentes resultam em `404`; falhas de comunicação com Product resultam em `503`.
 
+## Consultar pedidos
+
+`GET /orders` lista os pedidos do dono identificado por `id-account`, mais recentes primeiro.
+`GET /orders/{id}` consulta um pedido apenas para o dono; retorna `403` para pedido de outra
+conta, `404` para pedido inexistente e `401` sem `id-account`.
+
 ```bash
 ./mvnw clean verify
 ```
