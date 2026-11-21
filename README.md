@@ -33,9 +33,16 @@ Uma resposta `201 Created` contém o pedido salvo e os snapshots de preço usado
       "unitPrice": 19.99,
       "subtotal": 39.98
     }
-  ]
+  ],
+  "status": "PENDENTE",
+  "confirmedAt": null
 }
 ```
+
+O pedido nasce `PENDENTE`. A confirmação ao cliente é feita de forma assíncrona: o `order-service`
+publica o evento "pedido criado" numa fila do RabbitMQ, e o worker que consome a fila envia a
+confirmação e marca o pedido como `CONFIRMADO` (com `confirmedAt`). Um `GET /orders/{id}` logo depois
+mostra o novo status.
 
 O serviço rejeita itens sem produto, quantidade não positiva e chamadas sem `id-account`.
 Produtos inexistentes resultam em `404`; falhas de comunicação com Product resultam em `503`.
